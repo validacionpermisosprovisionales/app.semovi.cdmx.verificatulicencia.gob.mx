@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDMX - Verificación de Licencias de Conducir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FFF1F0; /* Fondo general ligeramente rojizo */
+            color: #2D2D2D;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Banner superior - sin filtro para mantener colores originales */
+        .top-banner {
+            width: 100%;
+            background-color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 3px solid #C62828; /* Rojo más intenso */
+        }
+
+        .top-banner img {
+            max-width: 100%;
+            height: auto;
+            max-height: 80px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Header styles - Nueva paleta de colores */
+        .gov-header {
+            background: linear-gradient(135deg, #8B1E1E 0%, #B71C1C 100%); /* Degradado rojo corporativo */
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(139, 30, 30, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        /* Escudo actualizado - sin filtro para color original */
+        .gov-logo {
+            height: 80px;
+            width: auto;
+            background-color: transparent; /* Asegura fondo transparente */
+        }
+
+        .header-text {
+            text-align: center;
+        }
+
+        .header-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .header-text h2 {
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        /* Nuevo logo SEMOVI */
+        .semovi-logo {
+            height: 70px; /* Ajuste de tamaño */
+            width: auto;
+            background-color: transparent; /* Fondo transparente */
+            border-radius: 8px; /* Pequeña curva opcional */
+        }
+
+        /* Services bar - con acento rojo */
+        .services-bar {
+            background-color: #B71C1C;
+            padding: 10px 0;
+            border-bottom: 3px solid #FFD54F; /* Amarillo dorado para contraste */
+        }
+
+        .services-links {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .services-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .services-links a:hover {
+            color: #FFD54F; /* Dorado en hover */
+        }
+
+        /* Main content */
+        main {
+            min-height: calc(100vh - 400px);
+            padding: 40px 0;
+        }
+
+        /* Consulta section */
+        .consulta-section {
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .consulta-card, .resultados-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(183, 28, 28, 0.15); /* Sombra rojiza */
+            overflow: hidden;
+            border: 1px solid #FFCDD2; /* Borde rojo claro */
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #8B1E1E 0%, #B71C1C 100%);
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-header i {
+            font-size: 28px;
+            color: #FFD54F; /* Iconos dorados */
+        }
+
+        .card-header h3 {
+            font-size: 20px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 30px 25px;
+            background-color: #FFF9F9; /* Fondo muy suave rojizo */
+        }
+
+        .card-body p {
+            color: #5D3A3A;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #8B1E1E;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: #B71C1C;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #FFCDD2;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            background-color: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #B71C1C;
+        }
+
+        .captcha-group {
+            margin-bottom: 25px;
+        }
+
+        .captcha-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #8B1E1E;
+        }
+
+        .captcha-group label i {
+            margin-right: 8px;
+            color: #B71C1C;
+        }
+
+        .captcha-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .captcha-code {
+            background: linear-gradient(135deg, #B71C1C 0%, #8B1E1E 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-decoration: line-through;
+            flex: 0 0 auto;
+        }
+
+        .captcha-container input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #FFCDD2;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .btn-consultar {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #B71C1C 0%, #8B1E1E 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-consultar:hover {
+            background: linear-gradient(135deg, #8B1E1E 0%, #B71C1C 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(183, 28, 28, 0.4);
+        }
+
+        .card-footer {
+            background-color: #FFEBEE; /* Fondo rojo muy claro */
+            padding: 15px 25px;
+            border-top: 1px solid #FFCDD2;
+            color: #8B1E1E;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-footer i {
+            color: #B71C1C;
+        }
+
+        /* Resultados section */
+        .resultados-section {
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .info-row {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid #FFCDD2;
+        }
+
+        .info-label {
+            font-weight: 600;
+            width: 200px;
+            color: #8B1E1E;
+        }
+
+        .info-label i {
+            color: #B71C1C;
+            margin-right: 5px;
+        }
+
+        .info-value {
+            flex: 1;
+            color: #2D2D2D;
+        }
+
+        .info-value.vigente {
+            color: #2E7D32;
+            font-weight: 600;
+        }
+
+        .info-value.no-vigente {
+            color: #B71C1C;
+            font-weight: 600;
+        }
+
+        .firma-electronica {
+            font-family: monospace;
+            background-color: #FFEBEE;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            word-break: break-all;
+            color: #5D3A3A;
+        }
+
+        .btn-nueva-consulta, .btn-pdf {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 10px;
+        }
+
+        .btn-nueva-consulta {
+            background-color: #B71C1C;
+            color: white;
+        }
+
+        .btn-pdf {
+            background-color: #C62828;
+            color: white;
+        }
+
+        .btn-nueva-consulta:hover {
+            background-color: #8B1E1E;
+        }
+
+        .btn-pdf:hover {
+            background-color: #B71C1C;
+        }
+
+        /* Info section */
+        .info-section {
+            margin-top: 40px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .info-item {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(183, 28, 28, 0.1);
+            border: 1px solid #FFCDD2;
+        }
+
+        .info-item i {
+            font-size: 40px;
+            color: #B71C1C;
+            margin-bottom: 15px;
+        }
+
+        .info-item h4 {
+            color: #8B1E1E;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .info-item p {
+            color: #5D3A3A;
+            font-size: 14px;
+        }
+
+        /* Footer - con tonos rojos */
+        .gov-footer {
+            background: linear-gradient(135deg, #5D2E2E 0%, #8B1E1E 100%);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 40px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h5 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #FFD54F;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            opacity: 1;
+            text-decoration: underline;
+            color: #FFD54F;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #FFCDD2;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .footer-bottom p {
+            margin: 5px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .services-links {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .info-label {
+                width: 100%;
+            }
+            
+            .captcha-container {
+                flex-direction: column;
+            }
+            
+            .captcha-code {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media print {
+            .top-banner, .gov-header, .services-bar, .consulta-section, .info-section, .gov-footer, .btn-nueva-consulta, .btn-pdf {
+                display: none !important;
+            }
+            
+            .resultados-section {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner superior -->
+    <div class="top-banner">
+        <img src="https://laliteradice.com/wp-content/uploads/2025/01/imagen-2-edited.png" alt="Ciudad de México - Capital de la Transformación">
+    </div>
+
+    <!-- Header con escudo y logos actualizados -->
+    <header class="gov-header">
+        <div class="container">
+            <div class="header-content">
+                <!-- Nuevo escudo de la CDMX -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Coat_of_arms_of_Mexico_City%2C_Mexico.svg" alt="Escudo CDMX" class="gov-logo">
+                
+                <div class="header-text">
+                    <h1>GOBIERNO DE LA CIUDAD DE MÉXICO</h1>
+                    <h2>Sistema de Verificación de Licencias de Conducir</h2>
+                </div>
+                
+                <!-- Nuevo logo SEMOVI -->
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfHAsqBv--kM8XP1c5rfa49oCAeWpO5aetqQ&s" alt="SEMOVI" class="semovi-logo">
+            </div>
+        </div>
+    </header>
+
+    <!-- Barra de servicios -->
+    <div class="services-bar">
+        <div class="container">
+            <div class="services-links">
+                <a href="#">Trámites</a>
+                <a href="#">Servicios</a>
+                <a href="#">Gobierno</a>
+                <a href="#">Participación</a>
+                <a href="#">Datos</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <!-- Sección de consulta -->
+        <section class="consulta-section">
+            <div class="consulta-card">
+                <div class="card-header">
+                    <i class="fas fa-search"></i>
+                    <h3>Consulta tu licencia de conducir</h3>
+                </div>
+                <div class="card-body">
+                    <p>Ingresa el folio de tu licencia para verificar su autenticidad y conocer la información registrada.</p>
+                    
+                    <form id="consultaForm">
+                        <div class="form-group">
+                            <label for="folio"><i class="fas fa-ticket-alt"></i> Número de Folio:</label>
+                            <input type="text" id="folio" name="folio" placeholder="Ej: LIC-2024-000123" required maxlength="20">
+                        </div>
+                        
+                        <div class="captcha-group">
+                            <label><i class="fas fa-shield-alt"></i> Verificación de seguridad:</label>
+                            <div class="captcha-container">
+                                <span class="captcha-code" id="captchaCode"></span>
+                                <input type="text" id="captchaInput" placeholder="Ingresa el código" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-consultar">
+                            <i class="fas fa-check-circle"></i> Verificar licencia
+                        </button>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Este servicio es gratuito y oficial de la Secretaría de Movilidad de la CDMX</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de resultados -->
+        <section class="resultados-section" id="resultadosSection" style="display: none;">
+            <div class="resultados-card">
+                <div class="card-header">
+                    <i class="fas fa-id-card"></i>
+                    <h3>Información de la Licencia</h3>
+                </div>
+                <div class="card-body" id="resultadoInfo">
+                    <!-- Los resultados se insertarán aquí dinámicamente -->
+                </div>
+                <div class="card-footer">
+                    <button class="btn-nueva-consulta" onclick="nuevaConsulta()">
+                        <i class="fas fa-redo-alt"></i> Realizar nueva consulta
+                    </button>
+                    <button class="btn-pdf" onclick="generarPDF()">
+                        <i class="fas fa-file-pdf"></i> Descargar PDF
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de información importante -->
+        <section class="info-section">
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>Aviso importante</h4>
+                    <p>Verifica que tu licencia sea auténtica y esté vigente. Este sistema te permite confirmar los datos oficiales.</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <h4>Horario de atención</h4>
+                    <p>Consulta disponible las 24 horas, los 365 días del año.</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <h4>Contacto</h4>
+                    <p>Si tienes dudas, llama al *0311 desde tu celular o al 55 5658 1111</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gov-footer">
+        <div class="container">
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h5>Secretaría de Movilidad</h5>
+                    <ul>
+                        <li><a href="#">Acerca de</a></li>
+                        <li><a href="#">Directorio</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h5>Trámites</h5>
+                    <ul>
+                        <li><a href="#">Licencias</a></li>
+                        <li><a href="#">Tarjetones</a></li>
+                        <li><a href="#">Multas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h5>Transparencia</h5>
+                    <ul>
+                        <li><a href="#">Portal de datos</a></li>
+                        <li><a href="#">Informes</a></li>
+                        <li><a href="#">Estadísticas</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Gobierno de la Ciudad de México. Todos los derechos reservados.</p>
+                <p>Av. Insurgentes Sur 1234, Colonia Del Valle, Alcaldía Benito Juárez, C.P. 03100, Ciudad de México.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        // Base de datos simulada de licencias de conducir
+        const licenciasDB = [
+            {
+                folio: "A290573",
+                nombre: "JESUS DAVID VILLALBA MORA",
+                curp: "VIMJ940328HDFLRS07",
+                fechaNacimiento: "28/03/1994",
+                tipo: "A1 (MOTOCICLETAS)",
+                vigencia: "2026-2029",
+                fechaExpedicion: "08/03/2026",
+                fechaVencimiento: "08/03/2029",
+                restricciones: "PENISILINA",
+                donador: "SÍ",
+                codigoPostal: "02660",
+                licenciaAnterior: "S/L",
+                estado: "VIGENTE",
+                firmaElectronica: "a1b2c3d4e5f6g7h8i9j0"
+            },
+            {
+                folio: "LIC-2024-000456",
+                nombre: "MARÍA FERNANDA LÓPEZ MARTÍNEZ",
+                curp: "LOMM900510MDFPRR03",
+                fechaNacimiento: "10/05/1990",
+                tipo: "A (Automovilista)",
+                vigencia: "2024-2029",
+                fechaExpedicion: "20/01/2024",
+                fechaVencimiento: "19/01/2029",
+                restricciones: "LENTES CORRECTORES",
+                donador: "NO",
+                codigoPostal: "06700",
+                licenciaAnterior: "LIC-2019-008901",
+                estado: "VIGENTE",
+                firmaElectronica: "j1k2l3m4n5o6p7q8r9s0"
+            },
+            {
+                folio: "LIC-2024-000789",
+                nombre: "ROBERTO SÁNCHEZ TORRES",
+                curp: "SATR780815HDFNRB05",
+                fechaNacimiento: "15/08/1978",
+                tipo: "B (Conductor de servicio público)",
+                vigencia: "2024-2026",
+                fechaExpedicion: "05/02/2024",
+                fechaVencimiento: "04/02/2026",
+                restricciones: "NINGUNA",
+                donador: "SÍ",
+                codigoPostal: "06800",
+                licenciaAnterior: "LIC-2021-002345",
+                estado: "VIGENTE",
+                firmaElectronica: "t1u2v3w4x5y6z7a8b9c0"
+            },
+            {
+                folio: "LIC-2023-001234",
+                nombre: "PATRICIA RAMÍREZ HERRERA",
+                curp: "RAHP750320MDFRRT04",
+                fechaNacimiento: "20/03/1975",
+                tipo: "A (Automovilista)",
+                vigencia: "2023-2027",
+                fechaExpedicion: "10/10/2023",
+                fechaVencimiento: "09/10/2027",
+                restricciones: "AUTOMÁTICO",
+                donador: "SÍ",
+                codigoPostal: "06100",
+                licenciaAnterior: "LIC-2018-006789",
+                estado: "VIGENTE",
+                firmaElectronica: "d1e2f3g4h5i6j7k8l9m0"
+            },
+            {
+                folio: "LIC-2022-005678",
+                nombre: "CARLOS FUENTES MEDINA",
+                curp: "FUMC820912HDFRDL06",
+                fechaNacimiento: "12/09/1982",
+                tipo: "C (Motociclista)",
+                vigencia: "2022-2025",
+                fechaExpedicion: "25/05/2022",
+                fechaVencimiento: "24/05/2025",
+                restricciones: "CASCO OBLIGATORIO",
+                donador: "NO",
+                codigoPostal: "03020",
+                licenciaAnterior: "N/A",
+                estado: "VIGENTE",
+                firmaElectronica: "n1o2p3q4r5s6t7u8v9w0"
+            },
+            {
+                folio: "LIC-2021-003456",
+                nombre: "ALEJANDRA TORRES VÁZQUEZ",
+                curp: "TOVA880705MDFRZL07",
+                fechaNacimiento: "05/07/1988",
+                tipo: "A (Automovilista)",
+                vigencia: "2021-2025",
+                fechaExpedicion: "15/08/2021",
+                fechaVencimiento: "14/08/2025",
+                restricciones: "NINGUNA",
+                donador: "SÍ",
+                codigoPostal: "06760",
+                licenciaAnterior: "LIC-2016-009012",
+                estado: "VIGENTE",
+                firmaElectronica: "x1y2z3a4b5c6d7e8f9g0"
+            },
+            {
+                folio: "LIC-2024-000999",
+                nombre: "MIGUEL ÁNGEL RUIZ CASTILLO",
+                curp: "RUCM950225HDFLSG08",
+                fechaNacimiento: "25/02/1995",
+                tipo: "D (Permiso para menores)",
+                vigencia: "2024-2025",
+                fechaExpedicion: "01/03/2024",
+                fechaVencimiento: "28/02/2025",
+                restricciones: "ACOMPAÑADO DE ADULTO",
+                donador: "NO",
+                codigoPostal: "03023",
+                licenciaAnterior: "N/A",
+                estado: "VIGENTE",
+                firmaElectronica: "h1i2j3k4l5m6n7o8p9q0"
+            },
+            {
+                folio: "LIC-2020-007890",
+                nombre: "LAURA CRISTINA MENDOZA FLORES",
+                curp: "MEFL730114MDFNRR09",
+                fechaNacimiento: "14/01/1973",
+                tipo: "A (Automovilista)",
+                vigencia: "2020-2024",
+                fechaExpedicion: "20/01/2020",
+                fechaVencimiento: "19/01/2024",
+                restricciones: "LENTES CORRECTORES",
+                donador: "SÍ",
+                codigoPostal: "03910",
+                licenciaAnterior: "LIC-2015-003456",
+                estado: "VENCIDA",
+                firmaElectronica: "r1s2t3u4v5w6x7y8z9a0"
+            }
+        ];
+
+        let licenciaActual = null;
+
+        // Función para generar CAPTCHA aleatorio
+        function generarCaptcha() {
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let captcha = '';
+            for (let i = 0; i < 6; i++) {
+                captcha += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            return captcha;
+        }
+
+        // Inicializar CAPTCHA al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            const captchaCode = document.getElementById('captchaCode');
+            captchaCode.textContent = generarCaptcha();
+        });
+
+        // Manejar el envío del formulario
+        document.getElementById('consultaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const folio = document.getElementById('folio').value.trim();
+            const captchaInput = document.getElementById('captchaInput').value.trim();
+            const captchaCode = document.getElementById('captchaCode').textContent;
+            
+            // Validar CAPTCHA
+            if (captchaInput !== captchaCode) {
+                alert('❌ El código de seguridad no coincide. Por favor, intenta de nuevo.');
+                // Regenerar CAPTCHA
+                document.getElementById('captchaCode').textContent = generarCaptcha();
+                document.getElementById('captchaInput').value = '';
+                return;
+            }
+            
+            // Validar que el folio no esté vacío
+            if (folio === '') {
+                alert('⚠️ Por favor, ingresa un número de folio.');
+                return;
+            }
+            
+            // Buscar la licencia en la base de datos
+            const licencia = licenciasDB.find(l => l.folio === folio);
+            
+            if (licencia) {
+                licenciaActual = licencia;
+                mostrarResultados(licencia);
+            } else {
+                alert('❌ No se encontró ninguna licencia con el folio proporcionado. Verifica el número e intenta de nuevo.');
+                // Regenerar CAPTCHA
+                document.getElementById('captchaCode').textContent = generarCaptcha();
+                document.getElementById('captchaInput').value = '';
+            }
+        });
+
+        // Función para mostrar los resultados
+        function mostrarResultados(licencia) {
+            // Ocultar sección de consulta
+            document.querySelector('.consulta-section').style.display = 'none';
+            
+            // Mostrar sección de resultados
+            const resultadosSection = document.getElementById('resultadosSection');
+            resultadosSection.style.display = 'block';
+            
+            // Generar HTML con la información de la licencia
+            const resultadoInfo = document.getElementById('resultadoInfo');
+            
+            // Determinar clase para el estado
+            const estadoClass = licencia.estado === 'VIGENTE' ? 'vigente' : 'no-vigente';
+            
+            resultadoInfo.innerHTML = `
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-ticket-alt"></i> Folio:</span>
+                    <span class="info-value">${licencia.folio}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-user"></i> Nombre:</span>
+                    <span class="info-value">${licencia.nombre}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-id-card"></i> CURP:</span>
+                    <span class="info-value">${licencia.curp}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-birthday-cake"></i> Fecha de Nacimiento:</span>
+                    <span class="info-value">${licencia.fechaNacimiento}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-car"></i> Tipo de Licencia:</span>
+                    <span class="info-value">${licencia.tipo}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-calendar-alt"></i> Vigencia:</span>
+                    <span class="info-value">${licencia.vigencia}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-calendar-check"></i> Fecha de Expedición:</span>
+                    <span class="info-value">${licencia.fechaExpedicion}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-calendar-times"></i> Fecha de Vencimiento:</span>
+                    <span class="info-value">${licencia.fechaVencimiento}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-exclamation-triangle"></i> Restricciones:</span>
+                    <span class="info-value">${licencia.restricciones}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-heart"></i> Donador de Órganos:</span>
+                    <span class="info-value">${licencia.donador}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-map-marker-alt"></i> Código Postal:</span>
+                    <span class="info-value">${licencia.codigoPostal}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-history"></i> Licencia Anterior:</span>
+                    <span class="info-value">${licencia.licenciaAnterior}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-circle"></i> Estado:</span>
+                    <span class="info-value ${estadoClass}">${licencia.estado}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-fingerprint"></i> Firma Electrónica:</span>
+                    <span class="info-value firma-electronica">${licencia.firmaElectronica}</span>
+                </div>
+            `;
+        }
+
+        // Función para realizar una nueva consulta
+        function nuevaConsulta() {
+            // Mostrar sección de consulta
+            document.querySelector('.consulta-section').style.display = 'block';
+            
+            // Ocultar sección de resultados
+            document.getElementById('resultadosSection').style.display = 'none';
+            
+            // Limpiar formulario
+            document.getElementById('consultaForm').reset();
+            
+            // Regenerar CAPTCHA
+            document.getElementById('captchaCode').textContent = generarCaptcha();
+            
+            licenciaActual = null;
+        }
+
+        // Función para generar PDF
+        function generarPDF() {
+            if (!licenciaActual) {
+                alert('No hay información de licencia para descargar.');
+                return;
+            }
+
+            const elemento = document.getElementById('resultadoInfo');
+            const nombreArchivo = `Licencia_${licenciaActual.folio}.pdf`;
+            
+            const opt = {
+                margin: [0.5, 0.5, 0.5, 0.5],
+                filename: nombreArchivo,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(elemento).save();
+        }
+
+        // Agregar efecto de carga al enviar el formulario
+        document.getElementById('consultaForm').addEventListener('submit', function() {
+            const btn = document.querySelector('.btn-consultar');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+            btn.disabled = true;
+            
+            // Revertir después de 1 segundo (simulación de procesamiento)
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Verificar licencia';
+                btn.disabled = false;
+            }, 1000);
+        });
+
+        // Lista de folios válidos para referencia rápida
+        console.log('Folios válidos para pruebas:');
+        licenciasDB.forEach(licencia => {
+            console.log(`📋 ${licencia.folio} - ${licencia.nombre}`);
+        });
+    </script>
+</body>
+</html>
